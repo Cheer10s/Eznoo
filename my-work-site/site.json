@@ -10,10 +10,10 @@
   ],
   "links": [
     {
-      "section": "software",
-      "title": "Example: my first Claude artifact (delete this entry)",
-      "description": "Replace this with a real link. Make the artifact public in Claude first, or visitors cannot open it.",
-      "url": "https://claude.ai/",
+      "section": "science",
+      "title": "Element Atlas",
+      "description": "Interactive periodic table with element data, bonding diagrams and a reaction lab.",
+      "url": "https://claude.ai/artifact/SC7vjiY6cLeSxpZG17THEt",
       "date": "2026-10-19"
     }
   ]
