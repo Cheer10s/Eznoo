@@ -209,6 +209,8 @@ body.noscroll { overflow: hidden; }
 @media (max-width: 760px) {
   .panels { flex-direction: column; min-height: 0; }
   .panel { flex: none; transition: none; }
+  .head { flex-wrap: wrap; gap: 2px 12px; }
+  .head .name { white-space: normal; }
   .body { min-width: 0; }
   .items { overflow: visible; grid-template-columns: 1fr; }
   .search { width: 100%; }
