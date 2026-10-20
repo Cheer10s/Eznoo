@@ -1,0 +1,20 @@
+{
+  "title": "My Work",
+  "tagline": "Notes, projects and study material from my classes and the software I build. Free to view and download.",
+  "sections": [
+    { "slug": "french", "name": "French", "blurb": "Extended French notes, vocabulary and practice." },
+    { "slug": "advanced-functions", "name": "Advanced Functions", "blurb": "Math notes, practice papers and study sheets." },
+    { "slug": "science", "name": "Science", "blurb": "Chemistry, physics and biology." },
+    { "slug": "business", "name": "Business", "blurb": "Business course notes and projects." },
+    { "slug": "software", "name": "Software & Programs", "blurb": "Programs, games and tools I have made or learned." }
+  ],
+  "links": [
+    {
+      "section": "software",
+      "title": "Example: my first Claude artifact (delete this entry)",
+      "description": "Replace this with a real link. Make the artifact public in Claude first, or visitors cannot open it.",
+      "url": "https://claude.ai/",
+      "date": "2026-10-19"
+    }
+  ]
+}
