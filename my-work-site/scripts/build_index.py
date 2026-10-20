@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scan files/<section>/*.pdf and write pdfs.json for the website.
+"""Scan files/<section>/ for .pdf and .html files and write pdfs.json for the website.
 
 Run automatically on every deploy (see .github/workflows/deploy.yml).
 You can also run it yourself to preview the site: python3 scripts/build_index.py
@@ -41,12 +41,14 @@ def main() -> None:
         if not folder.is_dir():
             print(f"note: no folder files/{slug}")
             continue
-        for pdf in sorted(folder.glob("*.pdf"), key=lambda p: p.name.lower()):
+        files = [p for p in folder.iterdir() if p.suffix.lower() in (".pdf", ".html")]
+        for pdf in sorted(files, key=lambda p: p.name.lower()):
             note = pdf.with_suffix(".txt")
             description = note.read_text(encoding="utf-8").strip() if note.exists() else ""
             items.append({
                 "section": slug,
                 "title": nice_title(pdf.stem),
+                "type": pdf.suffix.lower().lstrip("."),
                 "description": description,
                 "url": "files/" + quote(slug) + "/" + quote(pdf.name),
                 "date": commit_date(pdf),
