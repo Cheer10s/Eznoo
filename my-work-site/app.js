@@ -69,15 +69,15 @@
 
   function renderItem(item) {
     var li = el("li", "item");
+    var label = item.type === "pdf" ? "PDF" : item.type === "html" ? "Web page" : (item.label || "Link");
+    var topRow = el("div", "top-row");
+    topRow.appendChild(el("span", "badge", label));
+    var d = fmtDate(item.date);
+    if (d) topRow.appendChild(el("span", "when", d));
+    li.appendChild(topRow);
     li.appendChild(el("h3", "", item.title));
     if (item.description) li.appendChild(el("p", "", item.description));
-
-    var label = item.type === "pdf" ? "PDF" : item.type === "html" ? "Web page" : (item.label || "Link");
-    var bits = [label];
-    if ((item.type === "pdf" || item.type === "html") && item.size) bits.push(fmtSize(item.size));
-    var d = fmtDate(item.date);
-    if (d) bits.push(d);
-    li.appendChild(el("div", "meta", bits.join(" · ")));
+    if ((item.type === "pdf" || item.type === "html") && item.size) li.appendChild(el("div", "size", fmtSize(item.size)));
 
     var actions = el("div", "actions");
     if (item.type === "pdf" || item.type === "html") {
@@ -125,11 +125,23 @@
     applyExpanded();
   }
 
+  /* small flat illustrations, one per strip: orange sun, pale leaf shapes, layered hills */
+  function artSvg(i) {
+    var shapes = [
+      '<circle cx="150" cy="40" r="16" fill="#e8492a"/><path d="M0 110 Q60 50 120 100 T240 80 V120 H0Z" fill="#14583a"/><path d="M0 120 Q80 80 140 112 T240 104 V120 H0Z" fill="#0b3b26"/>',
+      '<path d="M20 120 C20 60 70 30 120 40 C120 90 80 120 20 120Z" fill="#b9d9a0"/><path d="M110 120 C110 80 150 55 200 60 C200 100 160 120 110 120Z" fill="#14583a"/><circle cx="196" cy="34" r="9" fill="#e8492a"/>',
+      '<rect x="20" y="50" width="70" height="70" rx="14" fill="#0b3b26"/><rect x="100" y="30" width="70" height="90" rx="14" fill="#b9d9a0"/><circle cx="205" cy="52" r="12" fill="#e8492a"/>',
+      '<path d="M0 120 L60 40 L110 100 L160 50 L240 120Z" fill="#14583a"/><path d="M0 120 L80 80 L150 120Z" fill="#0b3b26"/><circle cx="190" cy="34" r="11" fill="#e8492a"/>',
+      '<circle cx="70" cy="90" r="34" fill="#b9d9a0"/><circle cx="130" cy="80" r="26" fill="#0b3b26"/><circle cx="185" cy="96" r="20" fill="#e8492a"/>'
+    ];
+    return '<svg viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg" focusable="false">' + shapes[i % 5] + '</svg>';
+  }
+
   function build() {
     panelsEl.textContent = "";
     state.sections.forEach(function (s, idx) {
       var panel = el("section", "panel");
-      panel.style.setProperty("--tint", "var(--p" + ((idx % 5) + 1) + ")");
+      panel.style.setProperty("--tint", "var(--g" + ((idx % 5) + 1) + ")");
       panel.dataset.slug = s.slug;
 
       var head = el("button", "head");
@@ -150,7 +162,11 @@
       body.appendChild(items);
       body.appendChild(empty);
 
+      var art = el("div", "art");
+      art.setAttribute("aria-hidden", "true");
+      art.innerHTML = artSvg(idx);
       panel.appendChild(head);
+      panel.appendChild(art);
       panel.appendChild(body);
       panelsEl.appendChild(panel);
       panelMap[s.slug] = { panel: panel, head: head, count: count, items: items, empty: empty };
