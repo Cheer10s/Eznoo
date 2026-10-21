@@ -1114,7 +1114,12 @@
     <div id="hist-bar">
       <button type="button" id="hist-undo" title="Undo (Ctrl/⌘+Z)" disabled>↶</button>
       <button type="button" id="hist-redo" title="Redo (Ctrl/⌘+Shift+Z)" disabled>↷</button>
+<<<<<<< HEAD
       <button type="button" id="flash-open" class="txt" title="Flashcards — drill the ideas you pick">Cards</button>
+=======
+      <button type="button" id="view-update" title="Update: redraw the map and fit everything on screen">⟳</button>
+      <button type="button" id="ink-open" title="Open the drawing window — drag it onto your iPad display. Both windows work on their own while it is open.">✎</button>
+>>>>>>> 3546da42a43b0e27b6604826bc0ca4f5df3a749f
     </div>
     <div id="find-bar">
       <input type="text" id="find-input" placeholder="Find an idea…" spellcheck="false" autocomplete="off">
@@ -1663,6 +1668,7 @@
     render();
     histReset();
     if (repaired) save();
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ try{ fitView(); }catch(e){} }); });
     renderPdfPanel();
     try{ localStorage.setItem(LAST_OPEN_KEY, id); }catch(e){}
   }
@@ -5760,6 +5766,19 @@
   // ============================================================
   // init
   // ============================================================
+<<<<<<< HEAD
+=======
+  var viewUpdateBtn = document.getElementById("view-update");
+  if (viewUpdateBtn) viewUpdateBtn.addEventListener("click", function(){
+    try{ save(); }catch(e){}
+    render();
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ fitView(); }); });
+  });
+  var idx = [];
+  if (INK_MODE){
+    inkBoot();
+  } else {
+>>>>>>> 3546da42a43b0e27b6604826bc0ca4f5df3a749f
   migrateLegacyIfNeeded();
   customPalettes = loadCustomPalettes();
 
