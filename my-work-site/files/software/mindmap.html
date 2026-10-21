@@ -1108,6 +1108,7 @@
     <div id="hist-bar">
       <button type="button" id="hist-undo" title="Undo (Ctrl/⌘+Z)" disabled>↶</button>
       <button type="button" id="hist-redo" title="Redo (Ctrl/⌘+Shift+Z)" disabled>↷</button>
+      <button type="button" id="view-update" title="Update: redraw the map and fit everything on screen">⟳</button>
       <button type="button" id="ink-open" title="Open the drawing window — drag it onto your iPad display. Both windows work on their own while it is open.">✎</button>
     </div>
     <div id="find-bar">
@@ -1662,6 +1663,7 @@
     render();
     histReset();
     if (repaired) save();
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ try{ fitView(); }catch(e){} }); });
     renderPdfPanel();
     try{ localStorage.setItem(LAST_OPEN_KEY, id); }catch(e){}
     if (inkWin && !inkWin.closed) inkPost({ t: "init", data: mapPayload(true), dark: isDarkMode(), customPalettes: customPalettes, view: myView() });
@@ -6127,6 +6129,12 @@
   // ============================================================
   // init
   // ============================================================
+  var viewUpdateBtn = document.getElementById("view-update");
+  if (viewUpdateBtn) viewUpdateBtn.addEventListener("click", function(){
+    try{ save(); }catch(e){}
+    render();
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ fitView(); }); });
+  });
   var idx = [];
   if (INK_MODE){
     inkBoot();
