@@ -187,46 +187,52 @@
     background:linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.3) 58%, transparent 58%, transparent 70%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.3) 78%, transparent 78%);
   }
 
-  /* ---------- ink drawn on ideas + the drawing window ---------- */
-  #ink-layer{ position:absolute; left:0; top:0; width:1px; height:1px; overflow:visible; pointer-events:none; z-index:60; }
-  .mindnode.ink-target .face{ outline:3px solid #10B981; outline-offset:4px; }
-  html.ink-mode body > *:not(#editor-screen):not(#ink-ui):not(script):not(style){ display:none !important; }
-  html.ink-mode #editor-screen > *:not(#canvas-wrapper){ display:none !important; }
-  #ink-capture{ position:fixed; inset:0; z-index:100; touch-action:none; -webkit-user-select:none; user-select:none; }
-  #ink-bar{
-    position:fixed; top:12px; left:50%; transform:translateX(-50%); z-index:120;
-    display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center;
-    max-width:calc(100vw - 24px); padding:8px 12px;
-    background:#fff; color:#2b2438; border:1px solid #d8d3e4; border-radius:18px;
-    box-shadow:0 8px 28px rgba(30,15,60,0.22);
-    font:14px -apple-system, system-ui, sans-serif; -webkit-user-select:none; user-select:none;
+  #hist-bar button.txt{ width:auto; padding:0 12px; font-size:13px; }
+  #recall-counter.editing .num{ width:auto; min-width:0; background:none; }
+  #recall-counter .num-input{
+    width:46px; font:inherit; text-align:center; color:var(--text); background:var(--bg);
+    border:1px solid var(--accent); border-radius:6px; padding:2px 0; outline:none;
   }
-  #ink-bar button{
-    border:1px solid #d8d3e4; background:#fff; color:inherit; border-radius:10px;
-    height:42px; min-width:42px; padding:0 12px; font-size:18px; cursor:pointer;
-  }
-  #ink-bar button:disabled{ opacity:0.35; cursor:default; }
-  #ink-bar button.on{ background:#ece6fb; border-color:#8B5CF6; }
-  #ink-bar .sw{ width:32px; min-width:32px; height:32px; border-radius:50%; padding:0; border:2px solid #fff; box-shadow:0 0 0 1px #bbb; }
-  #ink-bar .sw.on{ box-shadow:0 0 0 3px #8B5CF6; }
-  #ink-bar .wd{ display:inline-flex; align-items:center; justify-content:center; }
-  #ink-bar .wd i{ display:block; background:#2b2438; border-radius:50%; }
-  #ink-bar .sep{ width:1px; height:26px; background:#d8d3e4; }
-  #ink-bar #ink-label{ color:#6b6480; font-size:13px; min-width:150px; max-width:260px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  #ink-bar #ink-done{ background:#8B5CF6; border-color:#8B5CF6; color:#fff; font-size:14px; font-weight:600; }
 
-  /* the drawing room: an idea grows a lighter, rounded area inside its own
-     box (on both sides of the flip) when it's picked or already has a drawing */
-  :root{ --room-h:200px; }
-  .mindnode.has-room .face{ border-radius:32px !important; }
-  .mindnode.has-room .face-front{ min-width:max(var(--mw, 0px), 300px) !important; padding-bottom:calc(var(--room-h) + 48px); }
-  .mindnode.has-room .face-back{ padding-bottom:calc(var(--room-h) + 48px); }
-  .mindnode.has-room .face::after{
-    content:""; position:absolute; left:24px; right:24px; bottom:24px; height:var(--room-h);
-    border-radius:22px; pointer-events:none;
-    background:rgba(255,255,255,0.3);
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,0.22);
+  /* ---------- flashcards ---------- */
+  #flash-screen{ position:fixed; inset:0; display:none; background:var(--bg); color:var(--text); z-index:141; overflow:auto; }
+  #flash-screen.show{ display:block; }
+  #flash-screen .wrap{ max-width:820px; margin:0 auto; padding:40px 24px 60px; }
+  #flash-screen .fl-top{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; }
+  #flash-screen h1{ margin:0; font:400 34px var(--display-font); }
+  #flash-screen .instr{ color:var(--muted-text); margin:0 0 16px; font-size:15px; }
+  #flash-screen .fl-tools{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+  #flash-screen .fl-groups{ display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+  #flash-screen .fl-lbl{ font-size:12px; color:var(--muted-text); margin-right:4px; }
+  #flash-screen .fl-chip{ border:none; color:#fff; border-radius:999px; padding:4px 12px; font:600 12px var(--text-font); cursor:pointer; }
+  #flash-screen .fl-list{ border:1px solid var(--border); border-radius:14px; background:var(--panel-bg); max-height:52vh; overflow:auto; padding:6px 0; }
+  #flash-screen .fl-row{ display:flex; align-items:center; gap:10px; padding:7px 12px; cursor:pointer; font-size:14px; }
+  #flash-screen .fl-row:hover{ background:var(--hover-bg); }
+  #flash-screen .fl-row.off{ opacity:0.5; cursor:default; }
+  #flash-screen .fl-row .sw{ width:12px; height:12px; border-radius:4px; flex:none; }
+  #flash-screen .fl-row .nm{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  #flash-screen .fl-row .note{ font-size:12px; color:var(--muted-text); }
+  #flash-screen .fl-branch{ border:1px solid var(--border); background:none; color:inherit; border-radius:8px; padding:2px 8px; font:12px var(--text-font); cursor:pointer; }
+  #flash-screen .fl-bar{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:16px; flex-wrap:wrap; }
+  #flash-screen .fl-shuf{ font-size:14px; display:flex; align-items:center; gap:6px; }
+  #flash-screen .fl-card{ display:grid; perspective:1400px; margin:18px 0 20px; cursor:pointer; outline:none; }
+  #flash-screen .fl-face{
+    grid-area:1/1; min-height:340px; border-radius:28px; padding:34px 38px; box-sizing:border-box;
+    display:flex; flex-direction:column; justify-content:center; gap:14px;
+    box-shadow:0 14px 40px rgba(30,15,60,0.22);
+    backface-visibility:hidden; transition:transform .45s cubic-bezier(.4,.2,.2,1);
   }
+  #flash-screen .fl-face.front{ align-items:center; text-align:center; }
+  #flash-screen .fl-face.back{ transform:rotateY(180deg); text-align:left; justify-content:flex-start; }
+  #flash-screen .fl-card.flipped .front{ transform:rotateY(-180deg); }
+  #flash-screen .fl-card.flipped .back{ transform:rotateY(0deg); }
+  #flash-screen .fl-path{ font-size:13px; opacity:0.7; }
+  #flash-screen .fl-title{ font:400 38px/1.2 var(--display-font); overflow-wrap:anywhere; }
+  #flash-screen .fl-tip{ font-size:12px; opacity:0.6; margin-top:10px; }
+  #flash-screen .fl-desc{ font:18px/1.5 var(--text-font); overflow-wrap:anywhere; }
+  #flash-screen .fl-desc ul, #flash-screen .fl-desc ol{ margin:0.2em 0; padding-left:1.4em; }
+  #flash-screen .fl-grade{ display:flex; gap:10px; justify-content:center; }
+  #flash-screen .score{ font:400 26px var(--display-font); margin:10px 0 18px; }
 
   /* ---------- hidden settings bar ---------- */
   #settings-handle{
@@ -1108,7 +1114,7 @@
     <div id="hist-bar">
       <button type="button" id="hist-undo" title="Undo (Ctrl/⌘+Z)" disabled>↶</button>
       <button type="button" id="hist-redo" title="Redo (Ctrl/⌘+Shift+Z)" disabled>↷</button>
-      <button type="button" id="ink-open" title="Open the drawing window — drag it onto your iPad display. Both windows work on their own while it is open.">✎</button>
+      <button type="button" id="flash-open" class="txt" title="Flashcards — drill the ideas you pick">Cards</button>
     </div>
     <div id="find-bar">
       <input type="text" id="find-input" placeholder="Find an idea…" spellcheck="false" autocomplete="off">
@@ -1119,8 +1125,6 @@
     </div>
     <button type="button" id="settings-handle" title="Settings">⚙</button>
     <div id="settings-bar">
-      <label class="srow"><span>Show drawings</span><input type="checkbox" id="set-ink"></label>
-      <div class="ssep"></div>
       <label class="srow"><span>Active recall</span><input type="checkbox" id="set-recall"></label>
       <label class="srow"><span>Recall after every</span>
         <select id="set-every"><option>3</option><option>4</option><option>5</option><option>6</option><option>8</option><option>10</option></select><span>boxes</span></label>
@@ -1532,28 +1536,25 @@
     return null;
   }
 
-  function mapPayload(forInk){
+  function mapPayload(){
     return {
       id: state.id, name: state.name,
       nodes: state.nodes, nextId: state.nextId, links: state.links,
       groups: state.groups, blocks: state.blocks,
       tags: state.tags, activeTagId: state.activeTagId,
       recall: state.recall,
-      pdfs: forInk ? [] : state.pdfs, pdfPanel: forInk ? null : state.pdfPanel,
+      pdfs: state.pdfs, pdfPanel: state.pdfPanel,
       pan: state.pan, scale: state.scale,
-      paletteId: state.paletteId, bgOverride: state.bgOverride,
-      showInk: state.showInk
+      paletteId: state.paletteId, bgOverride: state.bgOverride
     };
   }
 
   function save(){
     if (!state.id) return;
-    if (INK_MODE) return; // the drawing window never writes; the map window owns the data
     histRecord();
     try{
-      localStorage.setItem(mapKey(state.id), JSON.stringify(mapPayload(false)));
+      localStorage.setItem(mapKey(state.id), JSON.stringify(mapPayload()));
     }catch(e){}
-    schedulePush();
     var idx = loadIndex();
     var entry = idx.filter(function(m){ return m.id === state.id; })[0];
     var now = Date.now();
@@ -1664,7 +1665,6 @@
     if (repaired) save();
     renderPdfPanel();
     try{ localStorage.setItem(LAST_OPEN_KEY, id); }catch(e){}
-    if (inkWin && !inkWin.closed) inkPost({ t: "init", data: mapPayload(true), dark: isDarkMode(), customPalettes: customPalettes, view: myView() });
   }
 
   // puts a map's saved data into `state` (no drawing, no saving)
@@ -1684,6 +1684,7 @@
     // clean up any titles/descriptions saved with stray (or escaped) <div>s
     var repaired = false;
     state.nodes.forEach(function(n){
+      if (n.ink){ delete n.ink; repaired = true; } // drawing was removed
       ["text", "description"].forEach(function(f){
         if (typeof n[f] !== "string" || !n[f]) return;
         var clean = sanitizeRich(n[f]);
@@ -1694,7 +1695,6 @@
     state.scale = data.scale || 1;
     state.paletteId = data.paletteId || PREMADE_PALETTES[0].id;
     state.bgOverride = data.bgOverride || null;
-    state.showInk = data.showInk !== false;
     selectedIds = {};
     return repaired;
   }
@@ -2195,7 +2195,6 @@
       // text is free to grow the box to fit — capped so it wraps instead
       // of running out into one very long line
       front.style.minWidth = s.w + "px";
-      front.style.setProperty("--mw", s.w + "px");
       front.style.minHeight = s.h + "px";
       front.style.maxWidth = Math.max(s.w * 1.9, 300) + "px";
       front.style.fontFamily = node.level === 0 ? "var(--display-font)" : "var(--text-font)";
@@ -2270,7 +2269,6 @@
         save();
         if (justFinished) onDescriptionFinished(node.id);
       });
-      descText.addEventListener("input", function(){ drawInk(); });
       descText.addEventListener("mousedown", function(e){ e.stopPropagation(); });
       descText.addEventListener("keydown", function(e){
         var isBold = (e.key === "b" || e.key === "B") && (e.ctrlKey || e.metaKey);
@@ -2328,7 +2326,6 @@
       else el.classList.remove("selected");
     });
     updateLevelIndicator();
-    if (typeof refreshInk === "function" && typeof inkLayer !== "undefined") refreshInk();
   }
 
   function updateLevelIndicator(){
@@ -2418,7 +2415,6 @@
   }
 
   function drawLines(){
-    syncRooms();
     var old = linesSvg.querySelectorAll(".conn-line");
     old.forEach(function(el){ el.remove(); });
     canvas.querySelectorAll(".edge-label:not(.editing)").forEach(function(el){ el.remove(); });
@@ -2490,7 +2486,6 @@
     });
 
     drawGroups();
-    drawInk();
   }
 
   // ============================================================
@@ -3235,6 +3230,35 @@
     return c.slice(0, c.length >= 3 ? 2 : 1).map(function(n){ return n.id; });
   }
 
+  function editRecallCount(el){
+    var num = el.querySelector(".num");
+    el.classList.add("editing");
+    var inp = document.createElement("input");
+    inp.type = "number"; inp.min = 0; inp.max = 99; inp.value = state.recall.remaining; inp.className = "num-input";
+    num.textContent = "";
+    num.appendChild(inp);
+    inp.focus(); inp.select();
+    var finished = false;
+    function done(commit){
+      if (finished) return;
+      finished = true;
+      if (commit){
+        var v = parseInt(inp.value, 10);
+        if (isFinite(v)){ state.recall.remaining = Math.max(0, Math.min(99, v)); save(); }
+      }
+      el.classList.remove("editing");
+      renderRecallCounter();
+    }
+    inp.addEventListener("keydown", function(e){
+      e.stopPropagation();
+      if (e.key === "Enter"){ e.preventDefault(); done(true); }
+      else if (e.key === "Escape"){ e.preventDefault(); done(false); }
+    });
+    inp.addEventListener("mousedown", function(e){ e.stopPropagation(); });
+    inp.addEventListener("click", function(e){ e.stopPropagation(); });
+    inp.addEventListener("blur", function(){ done(true); });
+  }
+
   function renderRecallCounter(){
     var host = document.getElementById("editor-screen");
     var el = document.getElementById("recall-counter");
@@ -3242,7 +3266,11 @@
       el = document.createElement("div");
       el.id = "recall-counter";
       el.innerHTML = '<span class="num"></span><span class="lbl"></span>';
-      el.addEventListener("click", function(){ startRecallPrompt(null, true); });
+      el.addEventListener("click", function(e){
+        if (el.classList.contains("editing")) return;
+        if (e.target.closest(".num")){ editRecallCount(el); return; }
+        startRecallPrompt(null, true);
+      });
       el.addEventListener("contextmenu", function(e){
         e.preventDefault(); e.stopPropagation();
         var items = [{ label: "Recall Now", action: function(){ startRecallPrompt(null, true); } }, "separator"];
@@ -3259,9 +3287,9 @@
     }
     var r = state.recall.remaining;
     el.classList.toggle("ready", r <= 0);
-    el.querySelector(".num").textContent = r <= 0 ? "!" : r;
+    if (!el.classList.contains("editing")) el.querySelector(".num").textContent = r <= 0 ? "!" : r;
     el.querySelector(".lbl").textContent = r <= 0 ? "Recall ready" : (r === 1 ? "box until recall" : "boxes until recall");
-    el.title = "Finish a box's description to count down. Click to recall now; right-click to change how often.";
+    el.title = "Finish a box's description to count down. Click the number to change it; click anywhere else to recall now; right-click to change how often.";
     el.style.display = state.recall.enabled === false ? "none" : "";
   }
 
@@ -3388,39 +3416,9 @@
       '<h1><span class="swatch" style="background:' + st.bg + '"></span>' + titleHtml + '</h1>';
   }
 
-  // the drawing on this idea + the names of the groups it belongs to
+  // the names of the groups this idea belongs to
   function fillRecallHint(box, node){
     box.innerHTML = "";
-    var sec1 = document.createElement("div");
-    sec1.className = "hint-sec";
-    var h1 = document.createElement("h3"); h1.textContent = "Your drawing";
-    sec1.appendChild(h1);
-    if (Array.isArray(node.ink) && node.ink.length){
-      var sz = { w: Math.max(80, getRenderedSize(node.id).w - ROOM_INSET * 2), h: ROOM_H };
-      var minX = 0, minY = 0, maxX = sz.w, maxY = sz.h;
-      node.ink.forEach(function(st){
-        for (var i = 0; i < st.p.length; i += 2){
-          minX = Math.min(minX, st.p[i] - st.w); maxX = Math.max(maxX, st.p[i] + st.w);
-          minY = Math.min(minY, st.p[i + 1] - st.w); maxY = Math.max(maxY, st.p[i + 1] + st.w);
-        }
-      });
-      var pad = 14;
-      var svg = document.createElementNS(SVGNS, "svg");
-      svg.setAttribute("viewBox", (minX - pad) + " " + (minY - pad) + " " + (maxX - minX + pad * 2) + " " + (maxY - minY + pad * 2));
-      var r = document.createElementNS(SVGNS, "rect");
-      r.setAttribute("x", 0); r.setAttribute("y", 0); r.setAttribute("width", sz.w); r.setAttribute("height", sz.h);
-      r.setAttribute("rx", ROOM_RADIUS); r.setAttribute("fill", "none"); r.setAttribute("stroke", "#B7ADC9");
-      r.setAttribute("stroke-width", 2); r.setAttribute("stroke-dasharray", "6 5");
-      svg.appendChild(r);
-      node.ink.forEach(function(st){ svg.appendChild(makeStrokeEl(st)); });
-      var wrapD = document.createElement("div"); wrapD.className = "draw-box"; wrapD.appendChild(svg);
-      sec1.appendChild(wrapD);
-    } else {
-      var none = document.createElement("div"); none.className = "none"; none.textContent = "Nothing drawn on this idea.";
-      sec1.appendChild(none);
-    }
-    box.appendChild(sec1);
-
     var sec2 = document.createElement("div");
     sec2.className = "hint-sec";
     var h2 = document.createElement("h3"); h2.textContent = "Group";
@@ -4513,7 +4511,7 @@
     showMenuAt(e.clientX, e.clientY, histMenuItems().concat([
       { label: "Add Big Idea Here", action: function(){ addNode(null, pos.x, pos.y); } },
       { label: "Add Note Here", action: function(){ addBlock("note", pos.x, pos.y); } },
-      { label: "Open Drawing Window (for your iPad)…", action: function(){ openInkWindow(); } },
+      { label: "Flashcards…", action: function(){ openFlash(); } },
       { label: "Open a PDF Beside the Map…", action: function(){ document.getElementById("pdf-file-input").click(); } },
       "separator",
       { label: "Palette...", action: function(){ openPalettePanel(e.clientX, e.clientY); } },
@@ -4686,12 +4684,10 @@
       var items = [
         { label: "Add Child Idea", action: function(){ addNode(id, node.x + s.w/2 - 80, node.y + s.h + 70); } },
         { label: "Rename", action: function(){ renameNodeInline(id); } },
+        { label: "Flashcards for " + (selectedIds[id] && selectedList().length > 1 ? "Selected Ideas" : "This Idea"), action: function(){ openFlash(selectedIds[id] ? selectedList() : [id]); } },
         { label: "Duplicate Idea (with branches)", action: function(){ duplicateIdeas(selectedIds[id] ? selectedList() : [id]); } },
         { label: node.flipped ? "Show Idea Side" : "Show Description Side", action: function(){ toggleFlip(id); } }
       ];
-      if (node.ink && node.ink.length){
-        items.push({ label: "Clear Drawing on This Idea", action: function(){ delete node.ink; save(); refreshInk(); } });
-      }
       var myLinks = state.links.filter(function(l){ return l.from === id || l.to === id; });
       if (myLinks.length){
         items.push("separator");
@@ -5088,8 +5084,6 @@
   // drag the bottom-right corner to resize, right-click for more.
   var BLOCK_HEAD = 28;
   var NOTE_COLORS = ["#FEF3A6", "#FBC8D8", "#C7E4FB", "#CDEFC9", "#E1D3FA", "#FFD9B0"];
-  var INK_COLORS = ["#1f2937", "#ef4444", "#f59e0b", "#10b981", "#3b82f6", "#8b5cf6"];
-  var INK_WIDTHS = [2, 4, 8];
   var blockEls = {}; // block id -> element
 
   function getBlock(bid){
@@ -5140,38 +5134,6 @@
     items.push("separator");
     items.push({ label: "Delete Note", danger: true, action: function(){ deleteBlock(bid); } });
     showMenuAt(clientX, clientY, items);
-  }
-
-  function strokePath(p){
-    if (p.length < 4) return "M" + p[0] + " " + p[1] + " l0.01 0";
-    var d = "M" + p[0] + " " + p[1];
-    for (var i = 2; i < p.length - 2; i += 2){
-      d += " Q" + p[i] + " " + p[i + 1] + " " + ((p[i] + p[i + 2]) / 2) + " " + ((p[i + 1] + p[i + 3]) / 2);
-    }
-    return d + " L" + p[p.length - 2] + " " + p[p.length - 1];
-  }
-  function makeStrokeEl(st){
-    var path = document.createElementNS(SVGNS, "path");
-    path.setAttribute("d", strokePath(st.p));
-    path.setAttribute("stroke", st.c);
-    path.setAttribute("stroke-width", st.w);
-    path.setAttribute("fill", "none");
-    path.setAttribute("stroke-linecap", "round");
-    path.setAttribute("stroke-linejoin", "round");
-    return path;
-  }
-  function segDist(px, py, ax, ay, bx, by){
-    var dx = bx - ax, dy = by - ay, t = 0, l2 = dx * dx + dy * dy;
-    if (l2) t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / l2));
-    return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
-  }
-  function strokeNear(st, x, y, r){
-    var p = st.p, rr = r + st.w / 2;
-    if (p.length < 4) return Math.hypot(p[0] - x, p[1] - y) <= rr;
-    for (var i = 0; i < p.length - 2; i += 2){
-      if (segDist(x, y, p[i], p[i + 1], p[i + 2], p[i + 3]) <= rr) return true;
-    }
-    return false;
   }
 
   function buildBlockEl(b){
@@ -5321,546 +5283,224 @@
   }
 
   // ============================================================
-  // freehand ink on ideas, and the mirrored drawing window
+  // flashcards: drill the ideas you pick (front = the idea, back = its description)
   // ============================================================
-  // Every idea can carry its own drawing (node.ink: strokes stored relative to
-  // the idea's top-left, so they travel with it). All ink is painted in one
-  // layer above everything. A second browser window (drag it onto the iPad)
-  // shows the same map: tap an idea there to make it the target, then draw
-  // anywhere. While that window is open this window ignores the mouse.
-  var INK_MODE = /(^|[#&])ink(&|$)/.test(location.hash);
-  if (INK_MODE) document.documentElement.classList.add("ink-mode");
-
-  var inkLayer = document.createElementNS(SVGNS, "svg");
-  inkLayer.id = "ink-layer";
-  canvas.appendChild(inkLayer);
-  var inkGroups = {};   // node id -> <g> of its strokes
-  var inkLiveEls = {};  // node id -> <g> of the stroke being drawn right now
-  var inkTarget = null; // node id that new strokes belong to
-
-  function cleanStrokes(list){
-    if (!Array.isArray(list)) return null;
-    var out = [];
-    list.slice(0, 5000).forEach(function(st){
-      if (!st || typeof st.c !== "string" || !/^#[0-9a-fA-F]{3,8}$/.test(st.c)) return;
-      var w = Number(st.w);
-      if (!(w >= 1 && w <= 40) || !Array.isArray(st.p) || st.p.length < 2 || st.p.length % 2) return;
-      var p = st.p.map(Number);
-      if (p.some(function(n){ return !isFinite(n); })) return;
-      out.push({ c: st.c, w: w, p: p });
+  var flash = null; // { mode, picked, shuffle, queue, i, flipped, missed, first, total }
+  function flashHasCard(n){ return plainTextOf(n.description).length > 0; }
+  function flashEl(){
+    var el = document.getElementById("flash-screen");
+    if (!el){
+      el = document.createElement("div");
+      el.id = "flash-screen";
+      el.innerHTML = '<div class="wrap"></div>';
+      document.body.appendChild(el);
+    }
+    return el;
+  }
+  function openFlash(preselect){
+    if (!state.id){ return; }
+    var picked = {};
+    (preselect || selectedList()).forEach(function(id){
+      var n = getNode(id);
+      if (n && flashHasCard(n)) picked[id] = true;
     });
+    flash = { mode: "setup", picked: picked, shuffle: true };
+    hideMenu();
+    flashEl().classList.add("show");
+    renderFlashSetup();
+  }
+  function closeFlash(){
+    flash = null;
+    var el = document.getElementById("flash-screen");
+    if (el) el.classList.remove("show");
+  }
+  function flashOrder(){
+    // ideas in tree order, with their depth
+    var out = [], seen = {};
+    function walk(n, d){
+      if (seen[n.id]) return;
+      seen[n.id] = true;
+      out.push({ n: n, d: d });
+      childrenOf(n.id).forEach(function(c){ walk(c, d + 1); });
+    }
+    state.nodes.filter(function(n){ return n.parentId === null || n.parentId === undefined || !getNode(n.parentId); })
+      .forEach(function(n){ walk(n, 0); });
+    state.nodes.forEach(function(n){ walk(n, 0); });
     return out;
   }
+  function escHtml(t){ var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
 
-  var ROOM_H = 200, ROOM_INSET = 24, ROOM_RADIUS = 22, FLIP_SCALE = 1.18;
-  function inkVisible(){ return INK_MODE || state.showInk !== false; }
-
-  // the drawing room is the lighter rounded area inside an idea's box (see the
-  // .has-room CSS). Strokes are stored relative to its top-left corner, so a
-  // drawing keeps its place in the box on both sides of the flip.
-  function roomRectOf(n, el){
-    el = el || canvas.querySelector('.mindnode[data-id="' + n.id + '"]');
-    if (!el) return null;
-    var front = el.querySelector(".face-front");
-    if (!front) return null;
-    var fw = front.offsetWidth, fh = front.offsetHeight;
-    if (!n.flipped) return { x: n.x + ROOM_INSET, y: n.y + fh - ROOM_INSET - ROOM_H, s: 1, w: fw - ROOM_INSET * 2, h: ROOM_H };
-    var back = el.querySelector(".face-back");
-    var bw = back ? back.offsetWidth : fw, bh = back ? back.offsetHeight : fh, S = FLIP_SCALE;
-    var cx = n.x + fw / 2, cy = n.y + fh / 2;
-    return { x: cx - bw * S / 2 + ROOM_INSET * S, y: cy + bh * S / 2 - (ROOM_INSET + ROOM_H) * S, s: S, w: (bw - ROOM_INSET * 2) * S, h: ROOM_H * S };
-  }
-  var inkDefs = document.createElementNS(SVGNS, "defs");
-  inkLayer.appendChild(inkDefs);
-  // strokes are clipped to the drawing room so they stay inside the box
-  function inkClipFor(id, rr){
-    var cid = "ink-clip-" + id, cp = document.getElementById(cid), rect;
-    if (!cp){
-      cp = document.createElementNS(SVGNS, "clipPath"); cp.id = cid;
-      rect = document.createElementNS(SVGNS, "rect"); cp.appendChild(rect); inkDefs.appendChild(cp);
+  function renderFlashSetup(){
+    var wrap = flashEl().querySelector(".wrap");
+    var rows = flashOrder();
+    var pickedCount = Object.keys(flash.picked).length;
+    var html = '<div class="fl-top"><h1>Flashcards</h1><button type="button" class="recall-btn" data-f="close">Back to map</button></div>' +
+      '<p class="instr">Pick the ideas to drill. You’ll see the idea, then flip to check its description.</p>' +
+      '<div class="fl-tools">' +
+        '<button type="button" class="recall-btn" data-f="all">Select all</button>' +
+        '<button type="button" class="recall-btn" data-f="none">Clear</button>' +
+        '<button type="button" class="recall-btn" data-f="onmap">Use ideas selected on the map</button>' +
+      '</div>';
+    if ((state.groups || []).length){
+      html += '<div class="fl-groups"><span class="fl-lbl">Groups</span>' +
+        state.groups.map(function(g){
+          return '<button type="button" class="fl-chip" data-g="' + escHtml(String(g.id)) + '" style="background:' + (g.color || GROUP_COLORS[0]) + '">' + escHtml(g.name || "Group") + '</button>';
+        }).join("") + '</div>';
     }
-    rect = cp.firstChild;
-    rect.setAttribute("x", 0); rect.setAttribute("y", 0);
-    rect.setAttribute("width", rr.w / rr.s); rect.setAttribute("height", rr.h / rr.s);
-    rect.setAttribute("rx", ROOM_RADIUS); rect.setAttribute("ry", ROOM_RADIUS);
-    return cid;
-  }
-  function inkXform(rr){ return "translate(" + rr.x + " " + rr.y + ") scale(" + rr.s + ")"; }
+    html += '<div class="fl-list">' + rows.map(function(r){
+      var n = r.n, ok = flashHasCard(n), st = styleForLevel(n.level);
+      var hasKids = childrenOf(n.id).length > 0;
+      return '<label class="fl-row' + (ok ? "" : " off") + '" style="padding-left:' + (10 + r.d * 22) + 'px">' +
+        '<input type="checkbox" data-id="' + n.id + '"' + (flash.picked[n.id] ? " checked" : "") + (ok ? "" : " disabled") + '>' +
+        '<span class="sw" style="background:' + st.bg + '"></span>' +
+        '<span class="nm">' + escHtml(plainTextOf(n.text) || "Untitled") + '</span>' +
+        (ok ? "" : '<span class="note">no description yet</span>') +
+        (hasKids ? '<button type="button" class="fl-branch" data-branch="' + n.id + '" title="Pick this idea and everything under it">+ branch</button>' : "") +
+        '</label>';
+    }).join("") + '</div>' +
+    '<div class="fl-bar"><label class="fl-shuf"><input type="checkbox" id="fl-shuffle"' + (flash.shuffle ? " checked" : "") + '> Shuffle</label>' +
+      '<button type="button" class="recall-btn primary" data-f="start"' + (pickedCount ? "" : " disabled") + '>Start drill · ' + pickedCount + ' card' + (pickedCount === 1 ? "" : "s") + '</button></div>';
+    wrap.innerHTML = html;
 
-  function roomWanted(n){
-    return inkVisible() && ((Array.isArray(n.ink) && n.ink.length > 0) || !!selectedIds[n.id] || inkTarget === n.id);
-  }
-  // grow / shrink the boxes; returns true if any box changed size
-  function syncRooms(){
-    var changed = false;
-    canvas.querySelectorAll(".mindnode").forEach(function(el){
-      var n = getNode(Number(el.dataset.id));
-      var want = !!n && roomWanted(n);
-      if (el.classList.contains("has-room") !== want){ el.classList.toggle("has-room", want); changed = true; }
+    function again(){ renderFlashSetup(); }
+    wrap.querySelectorAll(".fl-row input[type=checkbox]").forEach(function(cb){
+      cb.addEventListener("change", function(){
+        var id = Number(cb.dataset.id);
+        if (cb.checked) flash.picked[id] = true; else delete flash.picked[id];
+        var keep = wrap.querySelector(".fl-list").scrollTop;
+        again(); wrap.querySelector(".fl-list").scrollTop = keep;
+      });
     });
-    return changed;
-  }
-  function refreshInk(){ if (syncRooms()) drawLines(); else drawInk(); }
-
-  function drawInk(){
-    inkLayer.style.display = inkVisible() ? "" : "none";
-    var els = {};
-    canvas.querySelectorAll(".mindnode").forEach(function(el){ els[el.dataset.id] = el; });
-    var seen = {};
-    state.nodes.forEach(function(n){
-      var list = n.ink;
-      if (!Array.isArray(list) || !list.length || !els[n.id]) return;
-      var rr = roomRectOf(n, els[n.id]);
-      if (!rr) return;
-      seen[n.id] = true;
-      var g = inkGroups[n.id];
-      if (!g){ g = inkGroups[n.id] = document.createElementNS(SVGNS, "g"); inkLayer.appendChild(g); }
-      if (g._src !== list || g._n !== list.length){
-        while (g.firstChild) g.removeChild(g.firstChild);
-        list.forEach(function(st){ g.appendChild(makeStrokeEl(st)); });
-        g._src = list; g._n = list.length;
-      }
-      g.setAttribute("transform", inkXform(rr));
-      g.setAttribute("clip-path", "url(#" + inkClipFor(n.id, rr) + ")");
+    wrap.querySelectorAll("[data-branch]").forEach(function(b){
+      b.addEventListener("click", function(e){
+        e.preventDefault(); e.stopPropagation();
+        var id = Number(b.dataset.branch);
+        [id].concat(descendantsOf(id)).forEach(function(i){ var n = getNode(i); if (n && flashHasCard(n)) flash.picked[i] = true; });
+        var keep = wrap.querySelector(".fl-list").scrollTop;
+        again(); wrap.querySelector(".fl-list").scrollTop = keep;
+      });
     });
-    Object.keys(inkGroups).forEach(function(id){
-      if (!seen[id]){ inkGroups[id].remove(); delete inkGroups[id]; }
+    wrap.querySelectorAll("[data-g]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var g = (state.groups || []).filter(function(x){ return String(x.id) === b.dataset.g; })[0];
+        if (!g) return;
+        g.nodeIds.forEach(function(i){ var n = getNode(i); if (n && flashHasCard(n)) flash.picked[i] = true; });
+        again();
+      });
     });
-    Object.keys(inkLiveEls).forEach(function(id){
-      var n = getNode(Number(id)), rr = n && roomRectOf(n, els[id]);
-      if (!rr){ inkLiveEls[id].remove(); delete inkLiveEls[id]; return; }
-      inkLiveEls[id].setAttribute("transform", inkXform(rr));
-      inkLiveEls[id].setAttribute("clip-path", "url(#" + inkClipFor(id, rr) + ")");
-    });
-    Object.keys(els).forEach(function(id){
-      els[id].classList.toggle("ink-target", inkTarget !== null && Number(id) === inkTarget);
-    });
-  }
-  function inkShowLive(id, st){
-    var n = getNode(id);
-    var rr = n && roomRectOf(n);
-    if (!rr) return;
-    var g = inkLiveEls[id];
-    if (!g){
-      g = inkLiveEls[id] = document.createElementNS(SVGNS, "g");
-      g._p = makeStrokeEl(st);
-      g.appendChild(g._p);
-      inkLayer.appendChild(g);
-    }
-    g._p.setAttribute("d", strokePath(st.p));
-    g._p.setAttribute("stroke", st.c);
-    g._p.setAttribute("stroke-width", st.w);
-    g.setAttribute("transform", inkXform(rr));
-    g.setAttribute("clip-path", "url(#" + inkClipFor(id, rr) + ")");
-  }
-  function inkClearLive(id){
-    if (inkLiveEls[id]){ inkLiveEls[id].remove(); delete inkLiveEls[id]; }
-  }
-  function inkClearAllLive(){
-    Object.keys(inkLiveEls).forEach(inkClearLive);
+    wrap.querySelector("#fl-shuffle").addEventListener("change", function(e){ flash.shuffle = e.target.checked; });
+    wrap.querySelector('[data-f="close"]').onclick = closeFlash;
+    wrap.querySelector('[data-f="all"]').onclick = function(){
+      state.nodes.forEach(function(n){ if (flashHasCard(n)) flash.picked[n.id] = true; }); again();
+    };
+    wrap.querySelector('[data-f="none"]').onclick = function(){ flash.picked = {}; again(); };
+    wrap.querySelector('[data-f="onmap"]').onclick = function(){
+      flash.picked = {};
+      selectedList().forEach(function(id){ var n = getNode(id); if (n && flashHasCard(n)) flash.picked[id] = true; });
+      again();
+    };
+    wrap.querySelector('[data-f="start"]').onclick = function(){
+      var ids = Object.keys(flash.picked).map(Number).filter(function(i){ return getNode(i); });
+      startFlashDrill(ids);
+    };
   }
 
-  function myView(){
-    var r = canvasWrapper.getBoundingClientRect();
-    return { cx: (r.width / 2 - state.pan.x) / state.scale, cy: (r.height / 2 - state.pan.y) / state.scale, scale: state.scale };
-  }
-  function followView(v){
-    if (!v || !isFinite(v.cx) || !isFinite(v.cy) || !isFinite(v.scale)) return;
-    var r = canvasWrapper.getBoundingClientRect();
-    state.scale = Math.max(0.05, Math.min(6, v.scale));
-    state.pan.x = r.width / 2 - v.cx * state.scale;
-    state.pan.y = r.height / 2 - v.cy * state.scale;
-    applyTransform();
-  }
-
-  // ---------- this (main) window ----------
-  var inkWin = null, inkPushTimer = null, inkWatch = null;
-
-  function inkPost(m){
-    if (!inkWin || inkWin.closed) return;
-    m.src = "mm-main";
-    try{ inkWin.postMessage(m, "*"); }catch(e){}
-  }
-  function schedulePush(){
-    if (!inkWin || inkPushTimer) return;
-    inkPushTimer = setTimeout(function(){
-      inkPushTimer = null;
-      inkPost({ t: "state", data: mapPayload(true) });
-    }, 60);
-  }
-
-  function openInkWindow(){
-    if (INK_MODE) return;
-    if (!state.id){ showMergeToast("Open a mind map first.", null); return; }
-    if (inkWin && !inkWin.closed){ inkWin.focus(); return; }
-    var url = location.href.split("#")[0] + "#ink";
-    var w = null;
-    try{ w = window.open(url, "mm-ink-window", "width=1180,height=820"); }catch(e){}
-    if (!w){
-      showMergeToast("Your browser blocked the pop-up window — allow pop-ups for this page, then try again.", null);
-      return;
+  function startFlashDrill(ids){
+    ids = ids.slice();
+    if (flash.shuffle){
+      for (var i = ids.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = ids[i]; ids[i] = ids[j]; ids[j] = t; }
     }
-    adoptInkWindow(w);
+    flash.mode = "drill"; flash.queue = ids; flash.i = 0; flash.flipped = false;
+    flash.missed = {}; flash.firstTry = {}; flash.total = ids.length; flash.done = 0;
+    renderFlashCard();
   }
-  function adoptInkWindow(w){
-    inkWin = w;
-    if (inkWatch) clearInterval(inkWatch);
-    var beat = 0;
-    inkWatch = setInterval(function(){
-      if (!inkWin || inkWin.closed){ endInkSession(); return; }
-      if (++beat % 4 === 0) inkPost({ t: "ping" });
-    }, 500);
-  }
-  function closeInkWindow(){
-    if (inkWin && !inkWin.closed){ try{ inkWin.close(); }catch(e){} }
-    endInkSession();
-  }
-  function endInkSession(){
-    if (inkWatch){ clearInterval(inkWatch); inkWatch = null; }
-    if (inkPushTimer){ clearTimeout(inkPushTimer); inkPushTimer = null; }
-    inkWin = null;
-    inkClearAllLive();
-    inkTarget = null;
-    refreshInk();
-  }
-
-  window.addEventListener("message", function(e){
-    var m = e.data;
-    if (!m || m.src !== "mm-ink" || INK_MODE) return;
-    if (m.t === "ready" && !inkWin && m.name === "mm-ink-window" && state.id && e.source){
-      adoptInkWindow(e.source); // the map window was reloaded while the drawing window stayed open
-    }
-    if (!inkWin || e.source !== inkWin) return; // only our own drawing window
-    if (m.t === "ready"){
-      inkPost({ t: "init", data: mapPayload(true), dark: isDarkMode(), customPalettes: customPalettes, view: myView() });
-    }
-    else if (m.t === "ink"){
-      var n = getNode(m.id);
-      var list = cleanStrokes(m.ink);
-      if (!n || !list) return;
-      if (list.length) n.ink = list; else delete n.ink;
-      inkClearLive(m.id);
-      save();
-      refreshInk();
-    }
-    else if (m.t === "live"){
-      var ln = getNode(m.id);
-      var l = cleanStrokes([{ c: m.c, w: m.w, p: m.p }]);
-      if (ln && l && l.length) inkShowLive(m.id, l[0]);
-    }
-    else if (m.t === "target"){
-      inkTarget = (typeof m.id === "number" && getNode(m.id)) ? m.id : null;
-      refreshInk();
-    }
-    else if (m.t === "closing"){ endInkSession(); }
-  });
-
-  // ---------- the drawing window itself ----------
-  function inkBoot(){
-    document.getElementById("gallery-screen").style.display = "none";
-    document.title = "Drawing — mind map";
-    var tool = "pen", pc = INK_COLORS[0], pw = INK_WIDTHS[1];
-    var undoS = [], redoS = [], gesture = null, pendingState = null, lastStateJson = "", ready = false;
-    var viewTimer = null, liveLast = 0, lastMain = Date.now();
-
-    var ui = document.createElement("div");
-    ui.id = "ink-ui";
-    ui.innerHTML =
-      '<div id="ink-bar">' +
-        '<button type="button" data-tool="pen" title="Pen">✎</button>' +
-        '<button type="button" data-tool="erase" title="Eraser (removes whole strokes)">⌫</button>' +
-        '<button type="button" data-tool="hand" title="Move around the map">✋</button>' +
-        '<span class="sep"></span>' +
-        INK_COLORS.map(function(c){ return '<button type="button" class="sw" data-c="' + c + '" style="background:' + c + '" title="Color"></button>'; }).join("") +
-        '<span class="sep"></span>' +
-        INK_WIDTHS.map(function(w, i){ return '<button type="button" class="wd" data-w="' + w + '" title="Thickness"><i style="width:' + (6 + i * 5) + 'px;height:' + (6 + i * 5) + 'px"></i></button>'; }).join("") +
-        '<span class="sep"></span>' +
-        '<button type="button" id="ink-undo" title="Undo">↶</button>' +
-        '<button type="button" id="ink-redo" title="Redo">↷</button>' +
-        '<button type="button" id="ink-clear" title="Erase everything drawn on the selected idea">Clear</button>' +
-        '<span class="sep"></span>' +
-        '<button type="button" id="ink-zout" title="Zoom out">−</button>' +
-        '<button type="button" id="ink-zin" title="Zoom in">+</button>' +
-        '<button type="button" id="ink-fit" title="Fit the whole map">Fit</button>' +
-        '<span id="ink-label"></span>' +
-        '<button type="button" id="ink-done" title="Close this window">Done</button>' +
+  function renderFlashCard(){
+    var wrap = flashEl().querySelector(".wrap");
+    if (flash.i >= flash.queue.length){ renderFlashDone(); return; }
+    var n = getNode(flash.queue[flash.i]);
+    if (!n){ flash.i++; renderFlashCard(); return; }
+    var st = styleForLevel(n.level);
+    var path = nodePath(n);
+    var missedN = Object.keys(flash.missed).length;
+    wrap.innerHTML =
+      '<div class="fl-top"><div class="recall-eyebrow">Flashcards · ' + Math.min(flash.done + 1, flash.total) + ' of ' + flash.total + (missedN ? ' · ' + missedN + ' to revisit' : '') + '</div>' +
+        '<button type="button" class="recall-btn" data-f="setup">End drill</button></div>' +
+      '<div class="fl-card' + (flash.flipped ? ' flipped' : '') + '" tabindex="0">' +
+        '<div class="fl-face front" style="background:' + st.bg + ';color:' + st.fg + '">' +
+          (path ? '<div class="fl-path">' + escHtml(path) + '</div>' : '') +
+          '<div class="fl-title">' + textToHtml(n.text) + '</div>' +
+          '<div class="fl-tip">Click or press Space to flip</div></div>' +
+        '<div class="fl-face back" style="background:' + st.bg + ';color:' + st.fg + '">' +
+          '<div class="fl-path">' + escHtml(plainTextOf(n.text)) + '</div>' +
+          '<div class="fl-desc">' + textToHtml(n.description || "") + '</div></div>' +
       '</div>' +
-      '<div id="ink-capture"></div>';
-    document.body.appendChild(ui);
-    var cap = document.getElementById("ink-capture");
-
-    function post(m){
-      if (!window.opener || window.opener.closed) return;
-      m.src = "mm-ink"; m.name = window.name;
-      try{ window.opener.postMessage(m, "*"); }catch(e){}
-    }
-    function sendView(now){
-      function go(){ viewTimer = null; }
-      if (now){ if (viewTimer) clearTimeout(viewTimer); go(); }
-      else if (!viewTimer) viewTimer = setTimeout(go, 40);
-    }
-    function targetNode(){ return inkTarget === null ? null : getNode(inkTarget); }
-    function plain(n){ return (plainTextOf(n.text) || "Untitled").slice(0, 40); }
-    function refreshUi(){
-      [].forEach.call(ui.querySelectorAll("[data-tool]"), function(b){ b.classList.toggle("on", b.dataset.tool === tool); });
-      [].forEach.call(ui.querySelectorAll("[data-c]"), function(b){ b.classList.toggle("on", b.dataset.c === pc && tool === "pen"); });
-      [].forEach.call(ui.querySelectorAll("[data-w]"), function(b){ b.classList.toggle("on", Number(b.dataset.w) === pw && tool === "pen"); });
-      document.getElementById("ink-undo").disabled = !undoS.length;
-      document.getElementById("ink-redo").disabled = !redoS.length;
-      var n = targetNode();
-      document.getElementById("ink-clear").disabled = !(n && n.ink && n.ink.length);
-      document.getElementById("ink-label").textContent = n ? "Drawing on: " + plain(n) : "Tap an idea to draw on it";
-      cap.style.cursor = tool === "hand" ? "grab" : tool === "erase" ? "cell" : "crosshair";
-    }
-    function setTarget(id){
-      inkTarget = id;
-      post({ t: "target", id: id });
-      refreshInk();
-      refreshUi();
-    }
-    function sendInk(id){
-      var n = getNode(id);
-      if (!n) return;
-      post({ t: "ink", id: id, ink: n.ink || [] });
-    }
-    function pushUndo(id){
-      var n = getNode(id);
-      undoS.push({ id: id, ink: JSON.stringify((n && n.ink) || []) });
-      if (undoS.length > 150) undoS.shift();
-      redoS = [];
-    }
-    function restore(from, to){
-      var e = from.pop();
-      if (!e) return;
-      var n = getNode(e.id);
-      if (!n) return;
-      to.push({ id: e.id, ink: JSON.stringify(n.ink || []) });
-      var list = JSON.parse(e.ink);
-      if (list.length) n.ink = list; else delete n.ink;
-      sendInk(e.id); refreshInk(); refreshUi();
-    }
-
-    function nodeAt(p){
-      for (var i = state.nodes.length - 1; i >= 0; i--){
-        var n = state.nodes[i], s = getRenderedSize(n.id);
-        if (p.x >= n.x - 6 && p.x <= n.x + s.w + 6 && p.y >= n.y - 6 && p.y <= n.y + s.h + 6) return n;
-      }
-      return null;
-    }
-    function ptOf(e){
-      var p = screenToCanvas(e.clientX, e.clientY);
-      return [p.x, p.y];
-    }
-
-    cap.addEventListener("contextmenu", function(e){ e.preventDefault(); });
-    cap.addEventListener("pointerdown", function(e){
-      if (!ready || gesture) return;
-      if (e.pointerType === "touch") return; // a resting hand never draws or moves anything
-      if (e.pointerType === "mouse" && e.button !== 0) return;
-      e.preventDefault();
-      try{ cap.setPointerCapture(e.pointerId); }catch(err){}
-      gesture = { id: e.pointerId, sx: e.clientX, sy: e.clientY, px: state.pan.x, py: state.pan.y,
-                  mode: "pending", abs: ptOf(e), target: inkTarget, touched: {}, snap: {} };
-    });
-    function eraseAt(g, pt){
-      state.nodes.forEach(function(n){
-        if (!n.ink || !n.ink.length) return;
-        var hit = false;
-        for (var i = n.ink.length - 1; i >= 0; i--){
-          var rr = roomRectOf(n) || { x: n.x, y: n.y, s: 1 };
-          if (strokeNear(n.ink[i], (pt[0] - rr.x) / rr.s, (pt[1] - rr.y) / rr.s, 10 / rr.s)){
-            if (!g.snap[n.id]){ g.snap[n.id] = JSON.stringify(n.ink); }
-            n.ink.splice(i, 1);
-            hit = true;
-          }
-        }
-        if (hit){
-          g.touched[n.id] = true;
-          if (!n.ink.length) delete n.ink;
-        }
-      });
-      refreshInk();
-    }
-    cap.addEventListener("pointermove", function(e){
-      var g = gesture;
-      if (!g || e.pointerId !== g.id) return;
-      var dist = Math.hypot(e.clientX - g.sx, e.clientY - g.sy);
-      if (g.mode === "pending"){
-        if (dist < 5) return;
-        if (tool === "erase") g.mode = "erase";
-        else if (tool === "hand") g.mode = "pan";
-        else if (g.target === null) g.mode = "none";
-        else g.mode = "draw";
-        if (g.mode === "erase") eraseAt(g, g.abs);
-      }
-      if (g.mode === "pan"){
-        state.pan.x = g.px + (e.clientX - g.sx);
-        state.pan.y = g.py + (e.clientY - g.sy);
-        applyTransform();
-        sendView(false);
-      } else if (g.mode === "erase"){
-        eraseAt(g, ptOf(e));
-      } else if (g.mode === "draw"){
-        var q = ptOf(e), a = g.abs;
-        if (Math.hypot(q[0] - a[a.length - 2], q[1] - a[a.length - 1]) * state.scale < 1.5) return;
-        a.push(q[0], q[1]);
-        var n = getNode(g.target);
-        if (!n) return;
-        var rr = roomRectOf(n) || { x: n.x, y: n.y, s: 1 };
-        var rel = a.map(function(v, i){ return Math.round(((v - (i % 2 ? rr.y : rr.x)) / rr.s) * 10) / 10; });
-        var st = { c: pc, w: pw, p: rel };
-        inkShowLive(g.target, st);
-        var now = Date.now();
-        if (now - liveLast > 40){
-          liveLast = now;
-          post({ t: "live", id: g.target, c: pc, w: pw, p: rel });
-        }
-        g.stroke = st;
-      }
-    });
-    function endGesture(e){
-      var g = gesture;
-      if (!g || e.pointerId !== g.id) return;
-      gesture = null;
-      if (g.mode === "pending"){
-        // a tap: pick the idea under the pen
-        if (e.type === "pointerup" && tool !== "erase"){
-          var hit = nodeAt(screenToCanvas(g.sx, g.sy));
-          setTarget(hit ? hit.id : null);
-        }
-      } else if (g.mode === "draw"){
-        var n = getNode(g.target);
-        if (n && g.stroke && g.stroke.p.length >= 2){
-          pushUndo(n.id);
-          if (!Array.isArray(n.ink)) n.ink = [];
-          n.ink.push(g.stroke);
-          sendInk(n.id);
-        }
-        inkClearLive(g.target);
-        refreshInk();
-        refreshUi();
-      } else if (g.mode === "erase"){
-        Object.keys(g.touched).forEach(function(id){
-          undoS.push({ id: Number(id), ink: g.snap[id] });
-          redoS = [];
-          sendInk(Number(id));
-        });
-        refreshUi();
-      } else if (g.mode === "pan"){
-        sendView(true);
-      }
-      if (pendingState){ var ps = pendingState; pendingState = null; applyState(ps); }
-    }
-    cap.addEventListener("pointerup", endGesture);
-    cap.addEventListener("pointercancel", endGesture);
-
-    function zoomAt(cx, cy, f){
-      var before = screenToCanvas(cx, cy);
-      var ns = Math.max(0.1, Math.min(3, state.scale * f));
-      var r = canvasWrapper.getBoundingClientRect();
-      state.scale = ns;
-      state.pan.x = (cx - r.left) - before.x * ns;
-      state.pan.y = (cy - r.top) - before.y * ns;
-      applyTransform();
-      sendView(false);
-    }
-    // scrolling / pinching on the iPad must never move the map
-    cap.addEventListener("wheel", function(e){ e.preventDefault(); }, { passive: false });
-    cap.addEventListener("touchstart", function(e){ e.preventDefault(); }, { passive: false });
-    cap.addEventListener("touchmove", function(e){ e.preventDefault(); }, { passive: false });
-
-    function fit(){
-      var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-      state.nodes.forEach(function(n){
-        var s = getRenderedSize(n.id);
-        minX = Math.min(minX, n.x); minY = Math.min(minY, n.y);
-        maxX = Math.max(maxX, n.x + s.w); maxY = Math.max(maxY, n.y + s.h);
-      });
-      if (!isFinite(minX)) return;
-      var r = canvasWrapper.getBoundingClientRect();
-      var sc = Math.min((r.width - 80) / (maxX - minX + 1), (r.height - 160) / (maxY - minY + 1), 1.5);
-      state.scale = Math.max(0.1, sc);
-      state.pan.x = r.width / 2 - ((minX + maxX) / 2) * state.scale;
-      state.pan.y = (r.height + 70) / 2 - ((minY + maxY) / 2) * state.scale;
-      applyTransform();
-      sendView(true);
-    }
-
-    ui.addEventListener("click", function(e){
-      var b = e.target.closest("button");
-      if (!b) return;
-      if (b.dataset.tool){ tool = b.dataset.tool; }
-      else if (b.dataset.c){ pc = b.dataset.c; tool = "pen"; }
-      else if (b.dataset.w){ pw = Number(b.dataset.w); tool = "pen"; }
-      else if (b.id === "ink-undo"){ restore(undoS, redoS); return; }
-      else if (b.id === "ink-redo"){ restore(redoS, undoS); return; }
-      else if (b.id === "ink-clear"){
-        var n = targetNode();
-        if (n && n.ink && n.ink.length){ pushUndo(n.id); delete n.ink; sendInk(n.id); refreshInk(); }
-      }
-      else if (b.id === "ink-zin"){ var r = canvasWrapper.getBoundingClientRect(); zoomAt(r.left + r.width / 2, r.top + r.height / 2, 1.25); }
-      else if (b.id === "ink-zout"){ var r2 = canvasWrapper.getBoundingClientRect(); zoomAt(r2.left + r2.width / 2, r2.top + r2.height / 2, 0.8); }
-      else if (b.id === "ink-fit"){ fit(); }
-      else if (b.id === "ink-done"){ post({ t: "closing" }); window.close(); return; }
-      refreshUi();
-    });
-
-    window.addEventListener("keydown", function(e){
-      e.stopImmediatePropagation();
-      if ((e.metaKey || e.ctrlKey) && String(e.key).toLowerCase() === "z"){
-        e.preventDefault();
-        if (e.shiftKey) restore(redoS, undoS); else restore(undoS, redoS);
-      } else if (e.key === "Escape"){ setTarget(null); }
-    }, true);
-    window.addEventListener("pagehide", function(){ post({ t: "closing" }); });
-
-    function applyState(data, keepView){
-      var json = JSON.stringify(data);
-      if (json === lastStateJson) return;
-      lastStateJson = json;
-      var pan = { x: state.pan.x, y: state.pan.y }, sc = state.scale;
-      applyMapData(data);
-      if (keepView !== false){ state.pan = pan; state.scale = sc; }
-      showEditor();
-      applyTransform();
-      render();
-      if (inkTarget !== null && !getNode(inkTarget)) inkTarget = null;
-      refreshInk();
-      refreshUi();
-    }
-
-    window.addEventListener("message", function(e){
-      var m = e.data;
-      if (!m || m.src !== "mm-main" || e.source !== window.opener) return;
-      lastMain = Date.now();
-      if (m.t === "init"){
-        if (Array.isArray(m.customPalettes)) customPalettes = m.customPalettes;
-        document.documentElement.classList.toggle("dark-mode", !!m.dark);
-        lastStateJson = "";
-        var firstInit = !ready;
-        applyState(m.data, !firstInit);
-        ready = true;
-        if (firstInit && m.view) followView(m.view);
-        refreshUi();
-      } else if (m.t === "state" && ready){
-        if (gesture && gesture.mode !== "pending") pendingState = m.data;
-        else applyState(m.data);
-      }
-    });
-
-    refreshUi();
-    // ask the map window for its data until it answers
-    setInterval(function(){
-      if (!ready || Date.now() - lastMain > 6000) post({ t: "ready" });
-    }, 2500);
-    post({ t: "ready" });
+      '<div class="fl-grade"' + (flash.flipped ? '' : ' style="visibility:hidden"') + '>' +
+        '<button type="button" class="recall-btn" data-f="miss">Missed it (←)</button>' +
+        '<button type="button" class="recall-btn primary" data-f="got">Got it (→)</button></div>';
+    var card = wrap.querySelector(".fl-card");
+    card.onclick = flipFlash;
+    wrap.querySelector('[data-f="setup"]').onclick = function(){ flash.mode = "setup"; renderFlashSetup(); };
+    wrap.querySelector('[data-f="miss"]').onclick = function(){ gradeFlash(false); };
+    wrap.querySelector('[data-f="got"]').onclick = function(){ gradeFlash(true); };
   }
+  function flipFlash(){
+    if (!flash || flash.mode !== "drill" || flash.i >= flash.queue.length) return;
+    flash.flipped = !flash.flipped;
+    var wrap = flashEl().querySelector(".wrap");
+    var card = wrap.querySelector(".fl-card");
+    if (card) card.classList.toggle("flipped", flash.flipped);
+    var gr = wrap.querySelector(".fl-grade");
+    if (gr) gr.style.visibility = flash.flipped ? "visible" : "hidden";
+  }
+  function gradeFlash(got){
+    if (!flash || flash.mode !== "drill" || !flash.flipped) return;
+    var id = flash.queue[flash.i], n = getNode(id);
+    if (n){
+      if (!(id in flash.firstTry)) flash.firstTry[id] = got;
+      n.recall = n.recall || { count: 0 };
+      n.recall.count = (n.recall.count || 0) + 1;
+      n.recall.last = Date.now();
+      n.recall.lastGrade = got ? "nailed" : "forgot";
+      save();
+    }
+    if (got){ delete flash.missed[id]; flash.done++; }
+    else { flash.missed[id] = true; flash.queue.push(id); }
+    flash.i++; flash.flipped = false;
+    renderFlashCard();
+  }
+  function renderFlashDone(){
+    var wrap = flashEl().querySelector(".wrap");
+    var ids = Object.keys(flash.firstTry);
+    var right = ids.filter(function(i){ return flash.firstTry[i]; }).length;
+    var missedIds = ids.filter(function(i){ return !flash.firstTry[i]; }).map(Number);
+    wrap.innerHTML = '<div class="fl-top"><h1>Drill finished</h1></div>' +
+      '<div class="score">' + right + ' of ' + ids.length + ' right first try' + '</div>' +
+      '<div class="fl-bar" style="justify-content:flex-start">' +
+        (missedIds.length ? '<button type="button" class="recall-btn primary" data-f="again">Drill the ' + missedIds.length + ' you missed</button>' : '') +
+        '<button type="button" class="recall-btn" data-f="setup">Pick different cards</button>' +
+        '<button type="button" class="recall-btn" data-f="close">Back to map</button></div>';
+    var a = wrap.querySelector('[data-f="again"]');
+    if (a) a.onclick = function(){ startFlashDrill(missedIds); };
+    wrap.querySelector('[data-f="setup"]').onclick = function(){ flash.mode = "setup"; renderFlashSetup(); };
+    wrap.querySelector('[data-f="close"]').onclick = closeFlash;
+  }
+  window.addEventListener("keydown", function(e){
+    if (!flash) return;
+    var k = e.key;
+    if (flash.mode === "drill"){
+      if (k === " " || k === "Enter" || k === "ArrowUp" || k === "ArrowDown"){ e.preventDefault(); flipFlash(); }
+      else if (k === "ArrowRight"){ e.preventDefault(); gradeFlash(true); }
+      else if (k === "ArrowLeft"){ e.preventDefault(); gradeFlash(false); }
+      else if (k === "Escape"){ e.preventDefault(); flash.mode = "setup"; renderFlashSetup(); }
+    } else if (k === "Escape"){ e.preventDefault(); closeFlash(); }
+    e.stopImmediatePropagation(); // nothing behind the cards should react to the keyboard
+  }, true);
+  document.getElementById("flash-open").addEventListener("click", function(){ openFlash(); });
 
   // ---------- hidden settings bar ----------
   var setBar = document.getElementById("settings-bar"), setHandle = document.getElementById("settings-handle");
   function renderSettings(){
     if (!setBar) return;
-    document.getElementById("set-ink").checked = state.showInk !== false;
     document.getElementById("set-recall").checked = state.recall.enabled !== false;
     document.getElementById("set-hints").checked = state.recall.hints !== false;
     document.getElementById("set-every").value = String(state.recall.every);
@@ -5877,7 +5517,6 @@
   ["mousedown", "contextmenu", "wheel", "dblclick"].forEach(function(ev){
     setBar.addEventListener(ev, function(e){ e.stopPropagation(); });
   });
-  document.getElementById("set-ink").addEventListener("change", function(e){ state.showInk = e.target.checked; save(); refreshInk(); });
   document.getElementById("set-recall").addEventListener("change", function(e){ state.recall.enabled = e.target.checked; save(); renderRecallCounter(); });
   document.getElementById("set-hints").addEventListener("change", function(e){ state.recall.hints = e.target.checked; save(); });
   document.getElementById("set-every").addEventListener("change", function(e){
@@ -5887,12 +5526,6 @@
     save(); renderRecallCounter();
   });
   document.getElementById("set-now").addEventListener("click", function(){ setSettingsOpen(false); startRecallPrompt(null, true); });
-
-  var inkOpenBtn = document.getElementById("ink-open");
-  if (inkOpenBtn){
-    if (INK_MODE) inkOpenBtn.style.display = "none";
-    inkOpenBtn.addEventListener("click", function(){ openInkWindow(); });
-  }
 
   // ============================================================
   // quality of life: shortcuts, find, fit view, duplicate
@@ -6048,8 +5681,8 @@
       ["Add a note or a drawing block", "right-click the board"],
       ["Flip an idea to its description", MOD + "+click"],
       ["Flip while typing in an idea", "tap Ctrl"],
-      ["Draw on ideas with your iPad", "✎ button, top left"],
-      ["Settings (drawings, recall)", "⚙ tab, top right"],
+      ["Flashcards", "Cards button, top left"],
+      ["Settings (recall)", "⚙ tab, top right"],
       ["Tag an idea with the active tag", (IS_MAC ? "⌥" : "Alt") + "+click"],
       ["Pan the PDF page", "drag it, or hold Space"],
       ["This list", "?"]
@@ -6127,14 +5760,10 @@
   // ============================================================
   // init
   // ============================================================
-  var idx = [];
-  if (INK_MODE){
-    inkBoot();
-  } else {
   migrateLegacyIfNeeded();
   customPalettes = loadCustomPalettes();
 
-  idx = loadIndex();
+  var idx = loadIndex();
   var lastOpenId = null;
   try{ lastOpenId = localStorage.getItem(LAST_OPEN_KEY); }catch(e){}
 
@@ -6145,7 +5774,6 @@
     openMap(lastOpenId);
   } else {
     showGallery();
-  }
   }
 
 })();
